@@ -1,0 +1,35 @@
+{
+  "messages": [
+    {
+      "id": 1,
+      "content": "fdsf",
+      "userId": 1,
+      "username": "pasha",
+      "likes": 0,
+      "reports": 0,
+      "likedBy": [],
+      "reportedBy": [],
+      "createdAt": "2025-10-07T16:45:52.058Z"
+    },
+    {
+      "id": 2,
+      "content": "dsa",
+      "userId": 1,
+      "username": "pasha",
+      "likes": 0,
+      "reports": 0,
+      "likedBy": [],
+      "reportedBy": [],
+      "createdAt": "2025-10-07T16:48:09.503Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "pasha",
+      "email": "pasha@example.com",
+      "password": "$2b$10$h92e990XlgD1hreAWfLzKuWrwWgP9j8IWJRQPn72u3MJZTt3yLWRC",
+      "createdAt": "2025-10-07T16:22:34.688Z"
+    }
+  ]
+}
