@@ -1,0 +1,83 @@
+services:
+  swag:
+    image: lscr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - URL=${DOMAIN}
+      - SUBDOMAINS=${SUBDOMAINS}
+      - VALIDATION=http
+    volumes:
+      - ./swag:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
+    networks:
+      - proxy
+
+  # nginx:
+  #   image: nginx
+  #   container_name: nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx:/usr/share/nginx/html:ro
+  #     - ./conf.d:/etc/nginx/conf.d:ro
+  #     - /etc/letsencrypt:/etc/letsencrypt:ro
+  #   networks:
+  #     - proxy
+
+  vaultwarden-db:
+    image: "mariadb"
+    container_name: "vaultwarden-db"
+    restart: always
+    env_file:
+      - ".env"
+    volumes:
+      - "/vaultwarden-db:/var/lib/mysql"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${VAULTWARDEN_DB_ROOT_PASSWORD}"
+      - "MYSQL_PASSWORD=${VAULTWARDEN_DB_PASSWORD}"
+      - "MYSQL_DATABASE=vaultwarden"
+      - "MYSQL_USER=${USER}"
+    healthcheck:
+      test: mariadb-admin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    networks:
+      - proxy
+
+  vaultwarden:
+    image: "vaultwarden/server:latest"
+    container_name: "vaultwarden"
+    hostname: "vaultwarden"
+    depends_on:
+      vaultwarden-db:
+        condition: service_healthy
+    restart: always
+    env_file:
+      - ".env"
+    volumes:
+      - "./vaultwarden:/data/"
+    environment:
+      - DATABASE_URL=mysql://${USER}:${VAULTWARDEN_DB_PASSWORD}@vaultwarden-db/vaultwarden
+      - ADMIN_TOKEN=${VAULTWARDEN_ADMIN_TOKEN}
+      - RUST_BACKTRACE=1
+      - DOMAIN=https://app1.${DOMAIN}
+    ports:
+      - "8080:80"
+    networks:
+      - proxy
+
+networks:
+  proxy:

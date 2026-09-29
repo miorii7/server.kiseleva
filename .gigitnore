@@ -1,0 +1,5 @@
+./vaultwarden-db
+.env
+swag/
+vaultwarden/
+EOF
