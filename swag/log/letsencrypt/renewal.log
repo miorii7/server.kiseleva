@@ -1,0 +1,17 @@
+<------------------------------------------------->
+
+<------------------------------------------------->
+cronjob running on Tue Sep 29 12:01:17 +06 2026
+Running certbot renew
+Saving debug log to /config/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /config/etc/letsencrypt/renewal/miorii.kitek-pg.ru.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Certificate not yet due for renewal
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+The following certificates are not due for renewal yet:
+  /config/etc/letsencrypt/live/miorii.kitek-pg.ru/fullchain.pem expires on 2026-12-28 (skipped)
+No renewals were attempted.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
