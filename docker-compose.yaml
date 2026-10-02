@@ -36,6 +36,7 @@ services:
 
   vaultwarden-db:
     image: "mariadb"
+    mem_limit: 256m
     container_name: "vaultwarden-db"
     restart: always
     env_file:
@@ -54,6 +55,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 55
+
     networks:
       - proxy
 
@@ -83,10 +85,22 @@ services:
     container_name: feedback-backend
     build: ./feedback-backend/.
     restart: unless-stopped
-    ports:
-        - 3001:3001
+    # ports:
+    #   - 3001:3001
     volumes:
         - ./feedback-backend/database.json:/app/database.json
+    networks:
+        - proxy
+
+  marketplace-backend:
+    container_name: marketplace-backend
+    build: ./marketplace-backend/.
+    restart: unless-stopped
+    volumes:
+      - ./marketplace-backend/database.json:/app/database.json
+    networks:
+      - proxy
 
 networks:
   proxy:
+    name: proxy
